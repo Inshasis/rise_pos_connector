@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include rise_pos_connector *.css
+recursive-include rise_pos_connector *.csv
+recursive-include rise_pos_connector *.html
+recursive-include rise_pos_connector *.ico
+recursive-include rise_pos_connector *.js
+recursive-include rise_pos_connector *.json
+recursive-include rise_pos_connector *.md
+recursive-include rise_pos_connector *.png
+recursive-include rise_pos_connector *.py
+recursive-include rise_pos_connector *.svg
+recursive-include rise_pos_connector *.txt
+recursive-exclude rise_pos_connector *.pyc
