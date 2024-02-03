@@ -1,0 +1,52 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-02-01 15:26:32.592724",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "merchant_id",
+  "shop_code",
+  "shop_name",
+  "erp_token"
+ ],
+ "fields": [
+  {
+   "fieldname": "merchant_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Merchant ID"
+  },
+  {
+   "fieldname": "shop_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Shop Code"
+  },
+  {
+   "fieldname": "shop_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Shop Name"
+  },
+  {
+   "fieldname": "erp_token",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "ERP Token"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-02-01 15:27:22.630625",
+ "modified_by": "Administrator",
+ "module": "Rise POS Connector",
+ "name": "Rise POS Shop Code",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
