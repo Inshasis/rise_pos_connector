@@ -59,8 +59,10 @@
    "default": "Inactive",
    "fieldname": "status",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Status",
-   "options": "\nActive\nInactive"
+   "options": "\nActive\nInactive",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_tcwjd",
@@ -70,7 +72,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-01 15:33:29.554761",
+ "modified": "2024-02-03 16:02:22.067253",
  "modified_by": "Administrator",
  "module": "Rise POS Connector",
  "name": "Rise POS Settings",
