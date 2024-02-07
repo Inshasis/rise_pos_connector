@@ -29,23 +29,23 @@ def sync_orders_rise_api():
             for ord_feach in ord['result']['orders']:
                 # Create customer
                 customer_list = frappe.get_list('Customer', fields=['customer_name'])
-                check = {'customer_name': ord_feach['customer_name']}
+                check = {'customer_name': ord_feach['customer_phone'] +"-"+ ord_feach['customer_name']}
                 if check not in customer_list:
                     customer = frappe.get_doc({
                         "doctype": "Customer",
-                        "customer_name": ord_feach['customer_name'],
+                        "customer_name": ord_feach['customer_phone'] +"-"+ ord_feach['customer_name'],
                         "customer_group": 'Individual',
                         "territory":'India'
                     })
                     customer.insert()
-                    frappe.msgprint("Create Customer")
+
                 # Create contact
                 contact_list = frappe.get_list('Contact', fields=['first_name'])
-                check = {'first_name': ord_feach['customer_name']}
+                check = {'first_name': ord_feach['customer_phone'] +"-"+ ord_feach['customer_name']}
                 if check not in contact_list:
                     guest = frappe.get_doc({
                         "doctype": "Contact",
-                        "first_name": ord_feach['customer_name']
+                        "first_name": ord_feach['customer_phone'] +"-"+ ord_feach['customer_name']
                     })
                     # Mobile Number
                     guest.append("phone_nos",{
@@ -55,9 +55,8 @@ def sync_orders_rise_api():
                     # Customer Links
                     guest.append("links",{
                         'link_doctype':'Customer',
-                        'link_name':ord_feach['customer_name'],
-                        'link_title':ord_feach['customer_name']
-
+                        'link_name':ord_feach['customer_phone'] +"-"+ ord_feach['customer_name'],
+                        'link_title':ord_feach['customer_phone'] +"-"+ ord_feach['customer_name']
                     })
                     guest.insert()
 
@@ -68,7 +67,7 @@ def sync_orders_rise_api():
                 if check not in sales_order:
                     sales_order_insert = frappe.get_doc({
                     "doctype": "Sales Order",
-                    "customer": ord_feach['customer_name'],
+                    "customer": ord_feach['customer_phone'] +"-"+ ord_feach['customer_name'],
                     "custom_order_id": ord_feach['order_id'],
                     "delivery_date":today()
 

@@ -41,4 +41,29 @@ def sync_items_rise_api():
                     "include_item_in_manufacturing":'1'
                 })
                 itm_crt.insert()
+
+                #Create Item Selling Price
+                it_pr_check = frappe.get_list('Item Price', fields=['item_code'])
+                check_ip = {'item_code': item['item_code'],'price_list': 'Standard Selling'}
+                if check_ip not in it_pr_check:
+                    itm_pr = frappe.get_doc({
+                        "doctype": "Item Price",
+                        "item_code": item['item_code'],
+                        "price_list":'Standard Selling',
+                        "price_list_rate":item['per_unit_price']
+                    })
+                    itm_pr.insert()
+
+                #Create Item Selling Price
+                it_pr_check = frappe.get_list('Item Price', fields=['item_code'])
+                check_ip = {'item_code': item['item_code'],'price_list': 'Standard Buying'}
+                if check_ip not in it_pr_check:
+                    itm_pr = frappe.get_doc({
+                        "doctype": "Item Price",
+                        "item_code": item['item_code'],
+                        "price_list":'Standard Buying',
+                        "price_list_rate":item['unit_cost']
+                    })
+                    itm_pr.insert() 
+
         
