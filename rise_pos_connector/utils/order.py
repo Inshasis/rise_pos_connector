@@ -69,7 +69,9 @@ def sync_orders_rise_api():
                     "doctype": "Sales Order",
                     "customer": ord_feach['customer_phone'] +"-"+ ord_feach['customer_name'],
                     "custom_order_id": ord_feach['order_id'],
-                    "delivery_date":today()
+                    "custom_shop_code": ord_feach['shop_code'],
+                    "custom_shop_user_name": ord_feach['shop_user_name'],
+                    "delivery_date":today(),
 
                     })
                     sales_order_insert.append("items",{
