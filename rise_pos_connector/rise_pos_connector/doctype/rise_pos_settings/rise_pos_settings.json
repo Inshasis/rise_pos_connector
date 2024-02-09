@@ -1,0 +1,95 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-02-01 15:20:50.669648",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "enable",
+  "column_break_tcwjd",
+  "status",
+  "section_break_kbcmf",
+  "api_key",
+  "column_break_ac3hm",
+  "licence_no",
+  "section_break_cmz75",
+  "shop_code_details"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "enable",
+   "fieldtype": "Check",
+   "label": "Enable"
+  },
+  {
+   "depends_on": "eval:doc.enable == \"1\"",
+   "fieldname": "section_break_kbcmf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "api_key",
+   "fieldtype": "Data",
+   "label": "API Key"
+  },
+  {
+   "fieldname": "column_break_ac3hm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "licence_no",
+   "fieldtype": "Data",
+   "label": "Licence No"
+  },
+  {
+   "depends_on": "eval:doc.status == \"Active\"",
+   "fieldname": "section_break_cmz75",
+   "fieldtype": "Section Break",
+   "label": "Shop Code Details"
+  },
+  {
+   "fieldname": "shop_code_details",
+   "fieldtype": "Table",
+   "label": "Shop Code Details",
+   "options": "Rise POS Shop Code"
+  },
+  {
+   "default": "Inactive",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Status",
+   "options": "\nActive\nInactive",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_tcwjd",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-02-03 16:02:22.067253",
+ "modified_by": "Administrator",
+ "module": "Rise POS Connector",
+ "name": "Rise POS Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
