@@ -2,9 +2,9 @@ from . import __version__ as app_version
 
 app_name = "rise_pos_connector"
 app_title = "Rise POS Connector"
-app_publisher = "Huda Infoteh"
+app_publisher = "InshaSiS Technologies"
 app_description = "Rise POS Connector Custom App"
-app_email = "info@hudainfotech.com"
+app_email = "support@inshasis.com"
 app_license = "MIT"
 
 # Includes in <head>
@@ -118,13 +118,17 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-#	"*": {
-#		"on_update": "method",
-#		"on_cancel": "method",
-#		"on_trash": "method"
-#	}
-# }
+doc_events = {
+
+    "Sales Invoice": {
+		"on_submit": "rise_pos_connector.rise_pos_connector.doctype.sales_invoice.on_submit",
+	}
+	# "*": {
+	# 	"on_update": "method",
+	# 	"on_cancel": "method",
+	# 	"on_trash": "method"
+	# }
+}
 
 # Scheduled Tasks
 # ---------------
