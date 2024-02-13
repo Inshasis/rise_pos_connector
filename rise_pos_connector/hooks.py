@@ -132,7 +132,13 @@ doc_events = {
 
 # Scheduled Tasks
 # ---------------
-
+scheduler_events = {
+	"cron": {
+		"* * * * *": [
+            "rise_pos_connector.utils.order.sync_invoice_rise_api"
+		]
+	}
+}
 # scheduler_events = {
 #	"all": [
 #		"rise_pos_connector.tasks.all"

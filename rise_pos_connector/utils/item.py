@@ -16,11 +16,11 @@ def sync_items_rise_api():
             headers = CaseInsensitiveDict()
             headers["Accept"] = "application/json"
             headers["Content-Type"] = "application/json"
-            headers["api_key"] = rps.api_key
-            headers["Auth_token"] =  item.erp_token
+            headers["api_key"] = "12345"
+            headers["Auth_token"] =  "cc85cdca166aef1c3ee1e1869f39cc55"
 
             data = {
-                "shop_code": item.shop_code
+                "shop_code": "SH0263"
             }
 
             response = requests.post(url, headers=headers, data=json.dumps(data))

@@ -14,13 +14,13 @@ def sync_invoice_rise_api():
         for item in rps.shop_code_details:
             url = "http://dev.onegreendiary.com/erp/get_shop_orders"
             payload = {
-                "limit": 320,
-                "page": 1,
-                "shop_code": "SH0226"
+                # "limit": 25,
+                # "page": 1,
+                "shop_code": "SH0265"
             }
             headers = {
                 'api_key': "12345",
-                'Auth_token': "6ceea044fa6fdc82d76bd7c567bbd2dd",
+                'Auth_token': "cc85cdca166aef1c3ee1e1869f39cc55"
             }
             # Make the API request
             response = requests.post(url, headers=headers, data=json.dumps(payload))
@@ -77,12 +77,36 @@ def sync_invoice_rise_api():
 
                             })
                             for i in ord_feach['items']:
-                                sales_inv_insert.append("items",{
-                                'item_code': i['item_code'],
-                                'qty':i['item_count'],
-                                'rate':i['item_price'],
-                                'amount':i['item_price'] * i['item_count']
-                                })
+
+                                #Create Item
+                                item_check = frappe.get_list('Item', fields=['item_code'])
+                                check = {'item_code': i['item_code']}
+                                if check not in item_check:
+                                    itm_crt = frappe.get_doc({
+                                        "doctype": "Item",
+                                        "item_code": i['item_code'],
+                                        "item_name": i['item_name'],
+                                        "item_group":'Products',
+                                        "stock_uom":'Nos',
+                                        "is_stock_item":'1',
+                                        "include_item_in_manufacturing":'1'
+                                    })
+                                    itm_crt.insert()
+
+                                    sales_inv_insert.append("items",{
+                                    'item_code': i['item_code'],
+                                    'qty':i['item_count'],
+                                    'rate':i['item_price'],
+                                    'amount':i['item_price'] * i['item_count']
+                                    })
+                                
+                                else:
+                                    sales_inv_insert.append("items",{
+                                    'item_code': i['item_code'],
+                                    'qty':i['item_count'],
+                                    'rate':i['item_price'],
+                                    'amount':i['item_price'] * i['item_count']
+                                    })
                             sales_inv_insert.insert(ignore_permissions=True)
                             sales_inv_insert.submit()
 
