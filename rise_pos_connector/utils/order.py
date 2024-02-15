@@ -14,8 +14,8 @@ def sync_invoice_rise_api():
         for item in rps.shop_code_details:
             url = "http://dev.onegreendiary.com/erp/get_shop_orders"
             payload = {
-                # "limit": 25,
-                # "page": 1,
+                "limit": 3,
+                "page": 1,
                 "shop_code": "SH0265"
             }
             headers = {
@@ -29,7 +29,7 @@ def sync_invoice_rise_api():
                 # Handle the API response as needed
                 ord = response.json()
                 for ord_feach in ord['result']['orders']:
-                    if ord_feach['shipping_type'] == "ST0003":    
+                    if ord_feach['shipping_type'] == "ST0003" and ord_feach['order_status'] == "ORDS0008":    
                         # Create customer
                         customer_list = frappe.get_list('Customer', fields=['customer_name'])
                         check = {'customer_name': ord_feach['customer_phone'] +"-"+ ord_feach['customer_name']}
@@ -63,19 +63,31 @@ def sync_invoice_rise_api():
                             })
                             guest.insert()
                         
+
+                        
                         # Transaction Id Check In Sales Invoice
                         sales_inv = frappe.get_list('Sales Invoice', fields=['custom_order_id'])
                         check_inv = {'custom_order_id': ord_feach['order_id']}
-
+                        
+                        #Taxes
+                        tax_amount = ord_feach['tax'] / 2
+                        
                         if check_inv not in sales_inv:
                             sales_inv_insert = frappe.get_doc({
                             "doctype": "Sales Invoice",
                             "customer": ord_feach['customer_phone'] +"-"+ ord_feach['customer_name'],
                             "custom_order_id": ord_feach['order_id'],
                             "custom_shop_code": ord_feach['shop_code'],
-                            "custom_shop_user_name": ord_feach['shop_user_name']
+                            "custom_shop_user_name": ord_feach['shop_user_name'],
 
                             })
+                            for pay in ord_feach['payment_type_summary']:
+                                sales_inv_insert.append("custom_payment_summary",{
+                                    'code':pay['code'],
+                                    'payment_name':pay['name'],
+                                    'amount':pay['amount']                                     
+                                })
+
                             for i in ord_feach['items']:
 
                                 #Create Item
@@ -99,41 +111,32 @@ def sync_invoice_rise_api():
                                     'rate':i['item_price'],
                                     'amount':i['item_price'] * i['item_count']
                                     })
-                                
+                                    
                                 else:
+
                                     sales_inv_insert.append("items",{
                                     'item_code': i['item_code'],
                                     'qty':i['item_count'],
                                     'rate':i['item_price'],
                                     'amount':i['item_price'] * i['item_count']
-                                    })
+                                    })                          
+
+                            sales_inv_insert.append("taxes",{
+                                'charge_type':"Actual",
+                                'account_head':"SGST - RP",
+                                'description':"SGST",
+                                'tax_amount':tax_amount                                      
+                            })
+
+                            sales_inv_insert.append("taxes",{
+                                'charge_type':"Actual",
+                                'account_head':"CGST - RP",
+                                'description':"CGST",
+                                'tax_amount':tax_amount                                      
+                            })
+                            
+                            
+                        
+
                             sales_inv_insert.insert(ignore_permissions=True)
                             sales_inv_insert.submit()
-
-                        # # Transaction Id Check
-                        # sales_order = frappe.get_list('Sales Order', fields=['custom_order_id'])
-                        # check = {'custom_order_id': ord_feach['order_id']}
-
-                        # if check not in sales_order:
-                        #     sales_order_insert = frappe.get_doc({
-                        #     "doctype": "Sales Order",
-                        #     "customer": ord_feach['customer_phone'] +"-"+ ord_feach['customer_name'],
-                        #     "custom_order_id": ord_feach['order_id'],
-                        #     "custom_shop_code": ord_feach['shop_code'],
-                        #     "custom_shop_user_name": ord_feach['shop_user_name'],
-                        #     "delivery_date":today(),
-
-                        #     })
-                        #     sales_order_insert.append("items",{
-                        #         'item_code':"ITABD7FOGV-198158",
-                        #         'item_name':"ITABD7FOGV-198158",
-                        #         'description':"ITABD7FOGV-198158",
-                        #         'delivery_date':today(),
-                        #         'qty':1,
-                        #         'rate':"100",
-                        #         'amount':"100"
-                        #     })
-                        #     sales_order_insert.insert(ignore_permissions=True)
-    else:
-        frappe.throw("Please Check Rise POS Setting.")                
-                    
