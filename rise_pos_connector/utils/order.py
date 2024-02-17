@@ -14,9 +14,9 @@ def sync_invoice_rise_api():
         for item in rps.shop_code_details:
             url = "http://dev.onegreendiary.com/erp/get_shop_orders"
             payload = {
-                "limit": 3,
+                "limit": 10,
                 "page": 1,
-                "shop_code": "SH0265"
+                "shop_code": "SH0263"
             }
             headers = {
                 'api_key': "12345",
@@ -69,9 +69,6 @@ def sync_invoice_rise_api():
                         sales_inv = frappe.get_list('Sales Invoice', fields=['custom_order_id'])
                         check_inv = {'custom_order_id': ord_feach['order_id']}
                         
-                        #Taxes
-                        tax_amount = ord_feach['tax'] / 2
-                        
                         if check_inv not in sales_inv:
                             sales_inv_insert = frappe.get_doc({
                             "doctype": "Sales Invoice",
@@ -80,7 +77,12 @@ def sync_invoice_rise_api():
                             "custom_shop_code": ord_feach['shop_code'],
                             "custom_shop_user_name": ord_feach['shop_user_name'],
 
+                            #Discount
+                            "apply_discount_on":"Net Total",
+                            "discount_amount":ord_feach['discount']
                             })
+
+                            #Payment Summary
                             for pay in ord_feach['payment_type_summary']:
                                 sales_inv_insert.append("custom_payment_summary",{
                                     'code':pay['code'],
@@ -88,8 +90,8 @@ def sync_invoice_rise_api():
                                     'amount':pay['amount']                                     
                                 })
 
+                            #Items
                             for i in ord_feach['items']:
-
                                 #Create Item
                                 item_check = frappe.get_list('Item', fields=['item_code'])
                                 check = {'item_code': i['item_code']}
@@ -112,6 +114,23 @@ def sync_invoice_rise_api():
                                     'amount':i['item_price'] * i['item_count']
                                     })
                                     
+                                    #Tax
+                                    if i['tax_rate'] != 0:                
+                                        sales_inv_insert.append("taxes",{
+                                            'charge_type':"Actual",
+                                            'account_head':"SGST - RPO",
+                                            'description':"SGST",
+                                            'custom_tax_rate':i['tax_rate'] / 2  ,
+                                            'tax_amount':i['tax_value'] / 2                                 
+                                        })
+
+                                        sales_inv_insert.append("taxes",{
+                                            'charge_type':"Actual",
+                                            'account_head':"CGST - RPO",
+                                            'description':"CGST",
+                                            'custom_tax_rate':i['tax_rate'] / 2,
+                                            'tax_amount':i['tax_value'] / 2                                     
+                                        })
                                 else:
 
                                     sales_inv_insert.append("items",{
@@ -119,24 +138,24 @@ def sync_invoice_rise_api():
                                     'qty':i['item_count'],
                                     'rate':i['item_price'],
                                     'amount':i['item_price'] * i['item_count']
-                                    })                          
+                                    })
 
-                            sales_inv_insert.append("taxes",{
-                                'charge_type':"Actual",
-                                'account_head':"SGST - RP",
-                                'description':"SGST",
-                                'tax_amount':tax_amount                                      
-                            })
+                                    #Tax
+                                    if i['tax_rate'] != 0:                
+                                        sales_inv_insert.append("taxes",{
+                                            'charge_type':"Actual",
+                                            'account_head':"SGST - RPO",
+                                            'description':"SGST",
+                                            'custom_tax_rate':i['tax_rate'] / 2  ,
+                                            'tax_amount':i['tax_value'] / 2                                 
+                                        })
 
-                            sales_inv_insert.append("taxes",{
-                                'charge_type':"Actual",
-                                'account_head':"CGST - RP",
-                                'description':"CGST",
-                                'tax_amount':tax_amount                                      
-                            })
-                            
-                            
-                        
-
+                                        sales_inv_insert.append("taxes",{
+                                            'charge_type':"Actual",
+                                            'account_head':"CGST - RPO",
+                                            'description':"CGST",
+                                            'custom_tax_rate':i['tax_rate'] / 2,
+                                            'tax_amount':i['tax_value'] / 2                                     
+                                        })
                             sales_inv_insert.insert(ignore_permissions=True)
                             sales_inv_insert.submit()
