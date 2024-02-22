@@ -15,7 +15,7 @@ def sync_po_rise_api():
         payload = {
             "shop_code": "SH0265",
             "only_special": 0,
-            "limit": 5
+            "limit": 7
         }
         headers = {
             'api_key': "12345",
@@ -102,6 +102,23 @@ def sync_po_rise_api():
                             'rate':itm['unit_cost'],
                             'amount':itm['unit_cost'] * itm['quantity']
                             })
+
+                            # #Tax
+                            # for tax in itm['tax_breakup']:
+                            #     po_entry_insert.append("taxes",{
+                            #         'charge_type':"Actual",
+                            #         'account_head':"SGST - RPO",
+                            #         'description':"SGST",
+                            #         'tax_amount':tax['rate'] / 2                            
+                            #     })
+
+                            #     po_entry_insert.append("taxes",{
+                            #         'charge_type':"Actual",
+                            #         'account_head':"CGST - RPO",
+                            #         'description':"CGST",
+                            #         'tax_amount':tax['rate'] / 2                                      
+                            #     })
+
                     po_entry_insert.insert(ignore_permissions=True)
                     # po_entry_insert.submit()
     else:
