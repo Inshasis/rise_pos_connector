@@ -139,12 +139,7 @@ scheduler_events = {
             "rise_pos_connector.utils.item.sync_items_rise_api"
 		],
         "*/2 * * * *": [
-            # "rise_pos_connector.utils.order.sync_invoice_rise_api_263",
-            "rise_pos_connector.utils.order_cancel.cancel_invoice_rise_api_263"
-		],
-        "*/3 * * * *": [
-            # "rise_pos_connector.utils.order.sync_invoice_rise_api_265",
-            "rise_pos_connector.utils.order_cancel.cancel_invoice_rise_api_265"
+            "rise_pos_connector.utils.order_cancel.order_cancel_rise_api",
 		]
 		
 	}
