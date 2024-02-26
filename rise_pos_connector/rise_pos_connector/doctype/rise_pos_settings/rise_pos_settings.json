@@ -11,6 +11,7 @@
   "column_break_tcwjd",
   "status",
   "section_break_kbcmf",
+  "url",
   "api_key",
   "column_break_ac3hm",
   "licence_no",
@@ -67,12 +68,17 @@
   {
    "fieldname": "column_break_tcwjd",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "url",
+   "fieldtype": "Data",
+   "label": "URL"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-03 16:02:22.067253",
+ "modified": "2024-02-26 21:15:23.610024",
  "modified_by": "Administrator",
  "module": "Rise POS Connector",
  "name": "Rise POS Settings",
