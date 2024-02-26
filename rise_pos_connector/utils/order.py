@@ -116,7 +116,7 @@ def sync_invoice_rise_api():
                                             for tax in i['tax_breakup']:
                                                 sales_inv_insert.append("taxes",{
                                                     'charge_type': "Actual",
-                                                    'account_head': tax['breakup_name']+" - RPO",
+                                                    'account_head': tax['breakup_name']+" - "+rps.abbr,
                                                     'description':tax['breakup_name'],
                                                     'custom_tax_rate':tax['rate'],
                                                     'tax_amount':tax['value']
@@ -133,7 +133,7 @@ def sync_invoice_rise_api():
                                             for tax in i['tax_breakup']:
                                                 sales_inv_insert.append("taxes",{
                                                     'charge_type': "Actual",
-                                                    'account_head': tax['breakup_name']+" - RPO",
+                                                    'account_head': tax['breakup_name']+" - "+rps.abbr,
                                                     'description':tax['breakup_name'],
                                                     'custom_tax_rate':tax['rate'],
                                                     'tax_amount':tax['value']
@@ -189,7 +189,7 @@ def sync_invoice_rise_api():
                                             for tax in i['tax_breakup']:
                                                 sales_inv_insert.append("taxes",{
                                                     'charge_type': "Actual",
-                                                    'account_head': tax['breakup_name']+" - RPO",
+                                                    'account_head': tax['breakup_name']+" - "+rps.abbr,
                                                     'description':tax['breakup_name'],
                                                     'custom_tax_rate':tax['rate'],
                                                     'tax_amount':tax['value']
@@ -206,7 +206,7 @@ def sync_invoice_rise_api():
                                             for tax in i['tax_breakup']:
                                                 sales_inv_insert.append("taxes",{
                                                     'charge_type': "Actual",
-                                                    'account_head': tax['breakup_name']+" - RPO",
+                                                    'account_head': tax['breakup_name']+" - "+rps.abbr,
                                                     'description':tax['breakup_name'],
                                                     'custom_tax_rate':tax['rate'],
                                                     'tax_amount':tax['value']
@@ -258,7 +258,7 @@ def sync_invoice_rise_api():
                                             for tax in i['tax_breakup']:
                                                 sales_inv_insert.append("taxes",{
                                                     'charge_type': "Actual",
-                                                    'account_head': tax['breakup_name']+" - RPO",
+                                                    'account_head': tax['breakup_name']+" - "+rps.abbr,
                                                     'description':tax['breakup_name'],
                                                     'custom_tax_rate':tax['rate'],
                                                     'tax_amount':tax['value']
@@ -275,7 +275,7 @@ def sync_invoice_rise_api():
                                             for tax in i['tax_breakup']:
                                                 sales_inv_insert.append("taxes",{
                                                     'charge_type': "Actual",
-                                                    'account_head': tax['breakup_name']+" - RPO",
+                                                    'account_head': tax['breakup_name']+" - "+rps.abbr,
                                                     'description':tax['breakup_name'],
                                                     'custom_tax_rate':tax['rate'],
                                                     'tax_amount':tax['value']

@@ -43,11 +43,11 @@ def sync_items_rise_api():
                             for tax in item['tax_settings']:
                                 if str(tax['rate']) == '18':
                                     itm_crt.append("taxes",{
-                                        'item_tax_template':"18 - RPO"
+                                        'item_tax_template':"18 - "+rps.abbr
                                     }) 
                                 elif str(tax['rate']) == '5':
                                     itm_crt.append("taxes",{
-                                        'item_tax_template':"5 - RPO"
+                                        'item_tax_template':"5 - "+rps.abbr
                                     })
                             itm_crt.insert()
 

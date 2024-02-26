@@ -15,6 +15,10 @@
   "api_key",
   "column_break_ac3hm",
   "licence_no",
+  "company_info_section",
+  "company",
+  "column_break_uibqg",
+  "abbr",
   "section_break_cmz75",
   "shop_code_details"
  ],
@@ -33,7 +37,9 @@
   {
    "fieldname": "api_key",
    "fieldtype": "Data",
-   "label": "API Key"
+   "in_list_view": 1,
+   "label": "API Key",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_ac3hm",
@@ -42,7 +48,9 @@
   {
    "fieldname": "licence_no",
    "fieldtype": "Data",
-   "label": "Licence No"
+   "in_list_view": 1,
+   "label": "Licence No",
+   "reqd": 1
   },
   {
    "depends_on": "eval:doc.status == \"Active\"",
@@ -72,13 +80,38 @@
   {
    "fieldname": "url",
    "fieldtype": "Data",
-   "label": "URL"
+   "in_list_view": 1,
+   "label": "URL",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company_info_section",
+   "fieldtype": "Section Break",
+   "label": "Company Info"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_uibqg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "company.abbr",
+   "fieldname": "abbr",
+   "fieldtype": "Data",
+   "label": "Abbr",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-26 21:15:23.610024",
+ "modified": "2024-02-26 23:41:19.324753",
  "modified_by": "Administrator",
  "module": "Rise POS Connector",
  "name": "Rise POS Settings",
