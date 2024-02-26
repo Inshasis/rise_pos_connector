@@ -7,8 +7,12 @@
  "engine": "InnoDB",
  "field_order": [
   "merchant_id",
-  "sync_pos_orders",
+  "sync_section",
+  "sync_orders",
+  "column_break_bk5zt",
   "sync_po",
+  "column_break_0d68k",
+  "sync_material",
   "shop_details_section",
   "shop_code",
   "shop_name",
@@ -92,20 +96,44 @@
    "label": "Address"
   },
   {
-   "fieldname": "sync_pos_orders",
-   "fieldtype": "Button",
-   "label": "Sync POS Orders"
+   "default": "0",
+   "fieldname": "sync_po",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Sync PO"
   },
   {
-   "fieldname": "sync_po",
-   "fieldtype": "Button",
-   "label": "Sync PO"
+   "fieldname": "sync_section",
+   "fieldtype": "Section Break",
+   "label": "Sync"
+  },
+  {
+   "default": "0",
+   "fieldname": "sync_orders",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Sync Orders"
+  },
+  {
+   "default": "0",
+   "fieldname": "sync_material",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Sync Material "
+  },
+  {
+   "fieldname": "column_break_bk5zt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_0d68k",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-02-14 12:26:21.378562",
+ "modified": "2024-02-23 23:31:40.052875",
  "modified_by": "Administrator",
  "module": "Rise POS Connector",
  "name": "Rise POS Shop Code",
