@@ -11,7 +11,7 @@ from frappe.utils import today
 @frappe.whitelist(allow_guest=True)
 def sync_invoice_rise_api():
     rps = frappe.get_doc('Rise POS Settings')
-    if rps.enable:
+    if rps.enable and rps.url:
         for shop in rps.shop_code_details:
             if shop.sync_orders:
                 url = rps.url+"/erp/get_shop_orders"
