@@ -19,7 +19,7 @@ def on_submit(doc,methods):
                 })
                 mop.insert()
 
-            if pay_type.amount != 0.00:                   
+            if pay_type.amount != 0.00 and pay_type.code != "PAYT0001":                   
                     pe = frappe.new_doc("Payment Entry")
                     pe.payment_type = "Receive"
                     pe.mode_of_payment = pay_type.payment_name
@@ -27,7 +27,7 @@ def on_submit(doc,methods):
                     pe.posting_date = doc.posting_date
                     pe.party_type = "Customer"
                     pe.party = doc.customer
-                    pe.paid_to = "Cash - RPO"
+                    pe.paid_to = "Cash - RP"
                     pe.paid_amount = pay_type.amount
                     pe.received_amount = pay_type.amount
 

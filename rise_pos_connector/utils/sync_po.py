@@ -1,10 +1,12 @@
 # Copyright (c) 2024, InshaSiS Technologies and contributors
 # For license information, please see license.txt
 
+
 import frappe
 import requests
 import json
 from frappe.utils import today
+from requests.structures import CaseInsensitiveDict
 
 #Invoice Fetch
 @frappe.whitelist(allow_guest=True)
@@ -12,20 +14,21 @@ def sync_po_rise_api():
     rps = frappe.get_doc('Rise POS Settings')
     if rps.enable:
         url = "http://dev.onegreendiary.com/erp/get_shop_purchase_orders"
-        payload = {
+        headers = CaseInsensitiveDict()
+        headers["Accept"] = "application/json"
+        headers["Content-Type"] = "application/json"
+        headers["api_key"] = "12345"
+        headers["Auth_token"] = "cc85cdca166aef1c3ee1e1869f39cc55"
+
+        data = {
             "shop_code": "SH0265",
             "only_special": 0,
-            "limit": 7
+            "limit": 1
         }
-        headers = {
-            'api_key': "12345",
-            'Auth_token': "cc85cdca166aef1c3ee1e1869f39cc55"
-        }
-        # Make the API request
-        response = requests.post(url, headers=headers, data=json.dumps(payload))
-        # Process the response
-        if response.status_code == 200:
-            # Handle the API response as needed
+
+        response = requests.post(url, headers=headers, data=json.dumps(data))
+        # print(response)
+        if (response.status_code == 200):
             ord = response.json()
             for get_po in ord['result']:
                 # Create Supplier
@@ -102,23 +105,6 @@ def sync_po_rise_api():
                             'rate':itm['unit_cost'],
                             'amount':itm['unit_cost'] * itm['quantity']
                             })
-
-                            # #Tax
-                            # for tax in itm['tax_breakup']:
-                            #     po_entry_insert.append("taxes",{
-                            #         'charge_type':"Actual",
-                            #         'account_head':"SGST - RPO",
-                            #         'description':"SGST",
-                            #         'tax_amount':tax['rate'] / 2                            
-                            #     })
-
-                            #     po_entry_insert.append("taxes",{
-                            #         'charge_type':"Actual",
-                            #         'account_head':"CGST - RPO",
-                            #         'description':"CGST",
-                            #         'tax_amount':tax['rate'] / 2                                      
-                            #     })
-
                     po_entry_insert.insert(ignore_permissions=True)
                     # po_entry_insert.submit()
     else:

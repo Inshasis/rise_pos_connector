@@ -62,11 +62,12 @@ def get_all_customers(licence_no,api_key):
 		try:
 			# Attempt to parse the JSON content of the response
 			data = response.json()
+			
 			for shop in data['result']['shops']:
-				rps = frappe.get_doc('Rise POS Settings')
-				rps.append('shop_code_details', {'merchant_id': shop['merchant_id'],'shop_code':shop['shop_code'], 'shop_name': shop['name'], 'shop_phone': shop['shop_phone_number'],'erp_token':shop['erp_token'],'latitude': shop['location']['latitude'],'longitude': shop['location']['longitude'],'address': shop['location']['address']})
-				rps.save(ignore_permissions=True)
-
+				# rps = frappe.get_doc('Rise POS Settings')
+				# rps.append('shop_code_details', {'merchant_id': shop['merchant_id'],'shop_code':shop['shop_code'], 'shop_name': shop['name'], 'shop_phone': shop['shop_phone_number'],'erp_token':shop['erp_token'],'latitude': shop['location']['latitude'],'longitude': shop['location']['longitude'],'address': shop['location']['address']})
+				# rps.save(ignore_permissions=True)
+				
 				# Create Warehouse
 				wh_list = frappe.get_list('Warehouse', fields=['warehouse_name'])
 				check_wh = {'warehouse_name': shop['name']}
@@ -77,6 +78,8 @@ def get_all_customers(licence_no,api_key):
 						"custom_shop_code": shop['shop_code']
 					})
 					warehouse.insert()
+
+			return data['result']['shops']	
 				
 		except json.JSONDecodeError as e:
 			frappe.msgprint(f"Error decoding JSON: {e}")
