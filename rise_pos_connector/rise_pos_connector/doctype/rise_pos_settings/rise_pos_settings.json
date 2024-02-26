@@ -85,6 +85,7 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval:doc.enable == \"1\"",
    "fieldname": "company_info_section",
    "fieldtype": "Section Break",
    "label": "Company Info"
@@ -111,7 +112,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-26 23:41:19.324753",
+ "modified": "2024-02-27 00:01:11.828173",
  "modified_by": "Administrator",
  "module": "Rise POS Connector",
  "name": "Rise POS Settings",
