@@ -14,7 +14,7 @@ def sync_invoice_rise_api():
     if rps.enable:
         for shop in rps.shop_code_details:
             if shop.sync_orders:
-                url = "http://dev.onegreendiary.com/erp/get_shop_orders"
+                url = rps.url+"/erp/get_shop_orders"
                 payload = {
                     "shop_code": shop.shop_code,
                     "limit": 1
