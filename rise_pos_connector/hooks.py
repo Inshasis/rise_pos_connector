@@ -135,19 +135,18 @@ doc_events = {
 scheduler_events = {
 	"cron": {
 		"* * * * *": [
-            # "rise_pos_connector.utils.order.sync_invoice_rise_api",
+            "rise_pos_connector.utils.order.sync_invoice_rise_api",
             "rise_pos_connector.utils.item.sync_items_rise_api"
 		],
         "*/2 * * * *": [
-            "rise_pos_connector.utils.order.shop_263"
+            # "rise_pos_connector.utils.order.sync_invoice_rise_api_263",
+            "rise_pos_connector.utils.order_cancel.cancel_invoice_rise_api_263"
 		],
         "*/3 * * * *": [
-            "rise_pos_connector.utils.order.shop_265"
-            # "rise_pos_connector.utils.order.sync_invoice_rise_api"
-		],
-		"*/5 * * * *": [
-            "rise_pos_connector.utils.order_cancel.cancel_invoice_rise_api"
+            # "rise_pos_connector.utils.order.sync_invoice_rise_api_265",
+            "rise_pos_connector.utils.order_cancel.cancel_invoice_rise_api_265"
 		]
+		
 	}
 }
 # scheduler_events = {
