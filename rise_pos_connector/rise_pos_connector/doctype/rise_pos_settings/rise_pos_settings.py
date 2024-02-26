@@ -17,7 +17,7 @@ class RisePOSSettings(Document):
 		
 	def before_save(self):
 		if self.enable == 1: 
-			url = "http://dev.onegreendiary.com/erp/get_all_shops"
+			url = self.url+"/erp/get_all_shops"
 			# Define the JSON payload
 			payload = {
 				"licence_no": self.licence_no
@@ -47,7 +47,8 @@ class RisePOSSettings(Document):
 
 @frappe.whitelist()
 def get_all_customers(licence_no,api_key):
-	url = "http://dev.onegreendiary.com/erp/get_all_shops"
+	rps = frappe.get_doc('Rise POS Settings')
+	url = rps.url+"/erp/get_all_shops"
 	# Define the JSON payload
 	payload = {
 		"licence_no": licence_no
