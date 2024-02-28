@@ -3,6 +3,10 @@
 
 frappe.ui.form.on('Rise POS Settings', {
 	refresh: function(frm) {
+		if(cur_frm.doc.enable && cur_frm.doc.status == "Active"){
+	        frm.set_df_property('url',  'hidden', 1);
+	        frm.set_df_property('api_key',  'hidden', 1);
+	    }
 		// Add a custom button to trigger the API call
 		frm.add_custom_button(__('Get All Shops'), function() {
 
@@ -31,6 +35,24 @@ frappe.ui.form.on('Rise POS Settings', {
 				}
 			});
 		});
+	},
+	validate(frm) {
+	    if(cur_frm.doc.enable && cur_frm.doc.status == "Active"){
+	        frm.set_df_property('url',  'hidden', 1);
+	        frm.set_df_property('api_key',  'hidden', 1);
+	    }
+	},
+	enable(frm) {
+	    if(cur_frm.doc.enable){
+	        frm.set_df_property('url',  'reqd', 1);
+	        frm.set_df_property('api_key',  'reqd', 1);
+	        frm.set_df_property('licence_no',  'reqd', 1);
+	    }
+	    else{
+	        frm.set_df_property('url',  'reqd', 0);
+	        frm.set_df_property('api_key',  'reqd', 0);
+	        frm.set_df_property('licence_no',  'reqd', 0);
+	    }
 	}
 	
 });
