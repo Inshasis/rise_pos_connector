@@ -11,6 +11,9 @@ class RisePOSSettings(Document):
 	def validate(self):
 		if self.enable == 0:
 			self.set("api_key", '')
+			self.set("company", '')
+			self.set("abbr", '')
+			self.set("url", '')
 			self.set("licence_no", '')
 			self.set("status", 'Inactive')
 			self.set("shop_code_details", [])
