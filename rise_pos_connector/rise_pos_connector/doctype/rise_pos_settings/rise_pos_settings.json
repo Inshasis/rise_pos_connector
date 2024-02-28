@@ -38,8 +38,7 @@
    "fieldname": "api_key",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "API Key",
-   "reqd": 1
+   "label": "API Key"
   },
   {
    "fieldname": "column_break_ac3hm",
@@ -49,8 +48,7 @@
    "fieldname": "licence_no",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Licence No",
-   "reqd": 1
+   "label": "Licence No"
   },
   {
    "depends_on": "eval:doc.status == \"Active\"",
@@ -81,8 +79,7 @@
    "fieldname": "url",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "URL",
-   "reqd": 1
+   "label": "URL"
   },
   {
    "depends_on": "eval:doc.enable == \"1\"",
@@ -94,8 +91,7 @@
    "fieldname": "company",
    "fieldtype": "Link",
    "label": "Company",
-   "options": "Company",
-   "reqd": 1
+   "options": "Company"
   },
   {
    "fieldname": "column_break_uibqg",
@@ -112,7 +108,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-27 00:01:11.828173",
+ "modified": "2024-02-28 13:44:28.957094",
  "modified_by": "Administrator",
  "module": "Rise POS Connector",
  "name": "Rise POS Settings",
