@@ -17,7 +17,7 @@ def sync_invoice_rise_api():
                 url = rps.url+"/erp/get_shop_orders"
                 payload = {
                     "shop_code": shop.shop_code,
-                    "limit": 1
+                    "limit": 25
                 }
                 headers = {
                     'api_key': rps.api_key,
@@ -30,14 +30,15 @@ def sync_invoice_rise_api():
                     # Handle the API response as needed
                     ord = response.json()
                     for ord_feach in ord['result']['orders']:
-                        if ord_feach['shipping_type'] == "ST0003" and ord_feach['order_status'] == "ORDS0008" and ord_feach['prev_order_id'] == None:    
+                        if ord_feach['valued_at'] >= 0 and ord_feach['shipping_type'] == "ST0003" and ord_feach['order_status'] == "ORDS0008" and ord_feach['prev_order_id'] == None:    
                             # Create customer
+                            customer = str(ord_feach['customer_phone']) +"-"+ str(ord_feach['customer_name'])
                             customer_list = frappe.get_list('Customer', fields=['customer_name'])
-                            check = {'customer_name': ord_feach['customer_phone'] +"-"+ ord_feach['customer_name']}
+                            check = {'customer_name': customer}
                             if check not in customer_list:
                                 customer = frappe.get_doc({
                                     "doctype": "Customer",
-                                    "customer_name": ord_feach['customer_phone'] +"-"+ ord_feach['customer_name'],
+                                    "customer_name": customer,
                                     "customer_group": 'Individual',
                                     "territory":'India'
                                 })
@@ -45,11 +46,11 @@ def sync_invoice_rise_api():
 
                             # Create contact
                             contact_list = frappe.get_list('Contact', fields=['first_name'])
-                            check = {'first_name': ord_feach['customer_phone'] +"-"+ ord_feach['customer_name']}
+                            check = {'first_name': customer}
                             if check not in contact_list:
                                 guest = frappe.get_doc({
                                     "doctype": "Contact",
-                                    "first_name": ord_feach['customer_phone'] +"-"+ ord_feach['customer_name']
+                                    "first_name": customer
                                 })
                                 # Mobile Number
                                 guest.append("phone_nos",{
@@ -59,8 +60,8 @@ def sync_invoice_rise_api():
                                 # Customer Links
                                 guest.append("links",{
                                     'link_doctype':'Customer',
-                                    'link_name':ord_feach['customer_phone'] +"-"+ ord_feach['customer_name'],
-                                    'link_title':ord_feach['customer_phone'] +"-"+ ord_feach['customer_name']
+                                    'link_name':customer,
+                                    'link_title':customer
                                 })
                                 guest.insert()
                             # Transaction Id Check In Sales Invoice
@@ -71,7 +72,7 @@ def sync_invoice_rise_api():
                                 if ord_feach['discount']:
                                     sales_inv_insert = frappe.get_doc({
                                     "doctype": "Sales Invoice",
-                                    "customer": ord_feach['customer_phone'] +"-"+ ord_feach['customer_name'],
+                                    "customer": customer,
                                     "custom_order_id": ord_feach['order_id'],
                                     "custom_shop_code": ord_feach['shop_code'],
                                     "custom_shop_user_name": ord_feach['shop_user_name'],
@@ -144,7 +145,7 @@ def sync_invoice_rise_api():
                                 elif ord_feach['cash_discount']:
                                     sales_inv_insert = frappe.get_doc({
                                     "doctype": "Sales Invoice",
-                                    "customer": ord_feach['customer_phone'] +"-"+ ord_feach['customer_name'],
+                                    "customer": customer,
                                     "custom_order_id": ord_feach['order_id'],
                                     "custom_shop_code": ord_feach['shop_code'],
                                     "custom_shop_user_name": ord_feach['shop_user_name'],
@@ -217,7 +218,7 @@ def sync_invoice_rise_api():
                                 else:
                                     sales_inv_insert = frappe.get_doc({
                                     "doctype": "Sales Invoice",
-                                    "customer": ord_feach['customer_phone'] +"-"+ ord_feach['customer_name'],
+                                    "customer": customer,
                                     "custom_order_id": ord_feach['order_id'],
                                     "custom_shop_code": ord_feach['shop_code'],
                                     "custom_shop_user_name": ord_feach['shop_user_name']

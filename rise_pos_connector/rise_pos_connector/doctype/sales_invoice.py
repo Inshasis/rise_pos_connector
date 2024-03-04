@@ -5,6 +5,7 @@ import frappe
 
 
 def on_submit(doc,methods):
+    rps = frappe.get_doc('Rise POS Settings')
     if doc.grand_total != 0.00:
         for pay_type in doc.custom_payment_summary:
             #Create Mode of Payment
@@ -18,28 +19,68 @@ def on_submit(doc,methods):
                     "type":"Bank"
                 })
                 mop.insert()
+            if pay_type.amount != 0.00 and pay_type.code != "PAYT0001" and pay_type.payment_entry == 0:  
+                #Order Payment Summary Payment Entry 
+                frappe.db.set_value('Order Payment Summary', str(pay_type.name), {
+                    'payment_entry': '1'
+                })
+                frappe.db.commit()
+                #Payment Entry
+                pe = frappe.new_doc("Payment Entry")
+                pe.payment_type = "Receive"
+                pe.mode_of_payment = pay_type.payment_name
+                pe.company = doc.company
+                pe.posting_date = doc.posting_date
+                pe.party_type = "Customer"
+                pe.party = doc.customer
+                pe.paid_to = "Cash - "+rps.abbr
+                pe.paid_amount = pay_type.amount
+                pe.received_amount = pay_type.amount
 
-            if pay_type.amount != 0.00 and pay_type.code != "PAYT0001":                   
-                    pe = frappe.new_doc("Payment Entry")
-                    pe.payment_type = "Receive"
-                    pe.mode_of_payment = pay_type.payment_name
-                    pe.company = doc.company
-                    pe.posting_date = doc.posting_date
-                    pe.party_type = "Customer"
-                    pe.party = doc.customer
-                    pe.paid_to = "Cash - RP"
-                    pe.paid_amount = pay_type.amount
-                    pe.received_amount = pay_type.amount
-
-                    pe.append("references", {
-                        "reference_doctype": "Sales Invoice",
-                        "reference_name": doc.name,
-                        "total_amount": pay_type.amount,
-                        "outstanding_amount": pay_type.amount,
-                        "allocated_amount": pay_type.amount
-                    })
-                    
-                    pe.insert()
-                    pe.submit()
+                pe.append("references", {
+                    "reference_doctype": "Sales Invoice",
+                    "reference_name": doc.name,
+                    "total_amount": pay_type.amount,
+                    "outstanding_amount": pay_type.amount,
+                    "allocated_amount": pay_type.amount
+                })
                 
+                pe.insert()
+                pe.submit()
+                frappe.db.commit()
             
+
+
+
+def on_change(doc,methods):
+    rps = frappe.get_doc('Rise POS Settings')
+    if doc.docstatus == 1 and doc.status == "Partly Paid" and doc.grand_total != 0.00:
+        for pay_type in doc.custom_payment_summary:
+            if pay_type.amount != 0.00 and pay_type.code != "PAYT0001" and pay_type.payment_entry == 0:
+                #Order Payment Summary Payment Entry 
+                frappe.db.set_value('Order Payment Summary', str(pay_type.name), {
+                    'payment_entry': '1'
+                })
+                frappe.db.commit()
+                # Payment Entry
+                pe = frappe.new_doc("Payment Entry")
+                pe.payment_type = "Receive"
+                pe.mode_of_payment = pay_type.payment_name
+                pe.company = doc.company
+                pe.posting_date = doc.posting_date
+                pe.party_type = "Customer"
+                pe.party = doc.customer
+                pe.paid_to = "Cash - "+rps.abbr
+                pe.paid_amount = pay_type.amount
+                pe.received_amount = pay_type.amount
+
+                pe.append("references", {
+                    "reference_doctype": "Sales Invoice",
+                    "reference_name": doc.name,
+                    "total_amount": pay_type.amount,
+                    "outstanding_amount": pay_type.amount,
+                    "allocated_amount": pay_type.amount
+                })
+                pe.insert()
+                pe.submit()
+                frappe.db.commit()

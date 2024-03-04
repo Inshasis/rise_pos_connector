@@ -121,7 +121,9 @@ app_license = "MIT"
 doc_events = {
 
     "Sales Invoice": {
-		"on_submit": "rise_pos_connector.rise_pos_connector.doctype.sales_invoice.on_submit",
+		"on_change": "rise_pos_connector.rise_pos_connector.doctype.sales_invoice.on_change",
+		"on_submit": "rise_pos_connector.rise_pos_connector.doctype.sales_invoice.on_submit"
+        
 	}
 	# "*": {
 	# 	"on_update": "method",
@@ -135,11 +137,13 @@ doc_events = {
 scheduler_events = {
 	"cron": {
 		"* * * * *": [
-            "rise_pos_connector.utils.order.sync_invoice_rise_api",
-            "rise_pos_connector.utils.item.sync_items_rise_api"
+            "rise_pos_connector.utils.item.sync_items_rise_api",
+            "rise_pos_connector.utils.order.sync_invoice_rise_api"
+            
 		],
         "*/2 * * * *": [
-            "rise_pos_connector.utils.order_cancel.order_cancel_rise_api",
+            "rise_pos_connector.utils.order_cancel.cancel_invoice_rise_api",
+			"rise_pos_connector.utils.update_order.update_invoice_rise_api"
 		]
 		
 	}

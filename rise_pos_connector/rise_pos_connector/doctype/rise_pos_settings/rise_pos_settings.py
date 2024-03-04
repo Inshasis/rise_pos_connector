@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Huda Infoteh and contributors
+# Copyright (c) 2024, InshaSiS Technologies and contributors
 # For license information, please see license.txt
 
 from faulthandler import is_enabled
