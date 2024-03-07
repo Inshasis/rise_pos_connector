@@ -40,20 +40,30 @@ def update_invoice_rise_api():
                                 if si.docstatus == 1 and si_name and si.outstanding_amount != 0.00:
                                     #Payment Summary
                                     for pay in ord_feach['payment_type_summary']:
-                                        if pay['code'] != 'PAYT0001' and pay['name'] == "cash":
-                                            add_on_entry_child = si.append('custom_payment_summary',{})
-                                            add_on_entry_child.code = "PAYT0003"
-                                            add_on_entry_child.payment_name = "Cash on Hand"
-                                            add_on_entry_child.amount = si.outstanding_amount
-                                            si.save()
-                                        else:
-                                            for ps in si.custom_payment_summary:
+                                        for ps in si.custom_payment_summary:
+                                            if pay['code'] != 'PAYT0001' and ps.payment_entry != 0 and pay['code'] == ps.code and si.outstanding_amount == pay['amount']:
+                                                # frappe.msgprint("Equal")
+                                                add_on_entry_child = si.append('custom_payment_summary',{})
+                                                add_on_entry_child.code = pay['code']
+                                                add_on_entry_child.payment_name = pay['name'].lower()
+                                                add_on_entry_child.amount = si.outstanding_amount
+                                                si.save()
+                                            elif pay['code'] != 'PAYT0001' and ps.payment_entry != 0 and pay['code'] != ps.code and si.outstanding_amount != pay['amount']:
+                                                # frappe.msgprint("No Equal")
+                                                add_on_entry_child = si.append('custom_payment_summary',{})
+                                                add_on_entry_child.code = pay['code']
+                                                add_on_entry_child.payment_name = pay['name'].lower()
+                                                add_on_entry_child.amount = pay['amount']
+                                                si.save()
+                                           
+                                            else:
                                                 if ps.payment_entry != 0:
-                                                    if pay['code'] != ps.code:
+                                                    if ps.code != pay['code']:
                                                         add_on_entry_child = si.append('custom_payment_summary',{})
                                                         add_on_entry_child.code = pay['code']
-                                                        add_on_entry_child.payment_name = pay['name']
-                                                        add_on_entry_child.amount = si.outstanding_amount
-                                                        si.save()
+                                                        add_on_entry_child.payment_name = pay['name'].lower()
+                                                        add_on_entry_child.amount = pay['amount']
+                                                        si.save()     
+                                    
     else:
         frappe.msgprint("Please Check Rise POS Setting Is Not Enable!")

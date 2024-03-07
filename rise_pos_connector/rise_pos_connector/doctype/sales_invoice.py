@@ -54,7 +54,7 @@ def on_submit(doc,methods):
 
 def on_change(doc,methods):
     rps = frappe.get_doc('Rise POS Settings')
-    if doc.docstatus == 1 and doc.status == "Partly Paid" and doc.grand_total != 0.00:
+    if doc.docstatus == 1 and doc.outstanding_amount != 0.00:
         for pay_type in doc.custom_payment_summary:
             if pay_type.amount != 0.00 and pay_type.code != "PAYT0001" and pay_type.payment_entry == 0:
                 #Order Payment Summary Payment Entry 
