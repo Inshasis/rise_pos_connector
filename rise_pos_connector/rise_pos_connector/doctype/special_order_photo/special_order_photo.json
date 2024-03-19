@@ -1,0 +1,38 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-03-20 01:37:50.455797",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "photo",
+  "photo_view"
+ ],
+ "fields": [
+  {
+   "fieldname": "photo",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Photo"
+  },
+  {
+   "fieldname": "photo_view",
+   "fieldtype": "Image",
+   "label": "Photo View",
+   "options": "photo"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-03-20 01:40:44.823322",
+ "modified_by": "Administrator",
+ "module": "Rise POS Connector",
+ "name": "Special Order Photo",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
