@@ -30,7 +30,7 @@ def sync_invoice_rise_api():
                     # Handle the API response as needed
                     ord = response.json()
                     for ord_feach in ord['result']['orders']:
-                        if ord_feach['valued_at'] >= 0 and ord_feach['shipping_type'] == "ST0003" and ord_feach['order_status'] == "ORDS0008" and ord_feach['prev_order_id'] == None:    
+                        if ord_feach['valued_at'] >= 0 and ord_feach['shipping_type'] == "ST0003" and ord_feach['order_status'] == "ORDS0008" and ord_feach['prev_order_id'] == "" or ord_feach['prev_order_id'] == None:    
                             # Create customer
                             customer = str(ord_feach['customer_phone']) +"-"+ str(ord_feach['customer_name'])
                             customer_list = frappe.get_list('Customer', fields=['customer_name'])
@@ -43,7 +43,6 @@ def sync_invoice_rise_api():
                                     "territory":'India'
                                 })
                                 customer.insert()
-
                             # Create contact
                             contact_list = frappe.get_list('Contact', fields=['first_name'])
                             check = {'first_name': customer}
@@ -86,7 +85,7 @@ def sync_invoice_rise_api():
                                     for pay in ord_feach['payment_type_summary']:
                                         sales_inv_insert.append("custom_payment_summary",{
                                             'code':pay['code'],
-                                            'payment_name':pay['name'],
+                                            'payment_name':pay['name'].lower(),
                                             'amount':pay['amount']                                     
                                         })
 
@@ -159,7 +158,7 @@ def sync_invoice_rise_api():
                                     for pay in ord_feach['payment_type_summary']:
                                         sales_inv_insert.append("custom_payment_summary",{
                                             'code':pay['code'],
-                                            'payment_name':pay['name'],
+                                            'payment_name':pay['name'].lower(),
                                             'amount':pay['amount']                                     
                                         })
 
@@ -228,7 +227,7 @@ def sync_invoice_rise_api():
                                     for pay in ord_feach['payment_type_summary']:
                                         sales_inv_insert.append("custom_payment_summary",{
                                             'code':pay['code'],
-                                            'payment_name':pay['name'],
+                                            'payment_name':pay['name'].lower(),
                                             'amount':pay['amount']                                     
                                         })
 

@@ -50,19 +50,8 @@ def on_submit(doc,methods):
 
 def on_change(doc,methods):
     rps = frappe.get_doc('Rise POS Settings')
-    if doc.docstatus == 1 and doc.outstanding_amount != 0.00 and doc.status == "Partly Paid" or doc.status == "Partly Paid and Discounted" or doc.status == "Overdue and Discounted" or doc.status == "Overdue":
+    if doc.docstatus == 1 and doc.outstanding_amount != 0.00 and doc.status == "Partly Paid" or doc.status == "Unpaid" or doc.status == "Partly Paid and Discounted" or doc.status == "Overdue and Discounted" or doc.status == "Overdue":
         for pay_type in doc.custom_payment_summary:
-            #Create Mode of Payment
-            # mop_check = frappe.get_list('Mode of Payment', fields=['mode_of_payment'])
-            # check = {'mode_of_payment': pay_type.payment_name}
-            # if check not in mop_check:
-            #     mop = frappe.get_doc({
-            #         "doctype": "Mode of Payment",
-            #         "mode_of_payment": pay_type.payment_name,
-            #         "enabled":'1',
-            #         "type":"Bank"
-            #     })
-            #     mop.insert()
             if pay_type.amount != 0.00 and pay_type.code != "PAYT0001" and pay_type.payment_entry == 0:
                 #Order Payment Summary Payment Entry 
                 frappe.db.set_value('Order Payment Summary', str(pay_type.name), {
