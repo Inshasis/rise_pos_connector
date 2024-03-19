@@ -58,3 +58,64 @@ frappe.ui.form.on('Rise POS Settings', {
 	}
 	
 });
+
+// Child Table Sync Po and Sync Matrial - Enable / Disable
+frappe.ui.form.on('Rise POS Shop Code', {
+	//Sync PO
+	sync_po:function(frm,cdt,cdn) {
+	    var d = locals[cdt][cdn];
+	    if(d.sync_po == 1){
+	        frappe.model.set_value(d.doctype, d.name, "sync_material", 0)
+	    }
+	},
+
+	//Sync Matrerial
+	sync_material:function(frm,cdt,cdn) {
+	    var d = locals[cdt][cdn];
+	    if(d.sync_material == 1){
+	        frappe.model.set_value(d.doctype, d.name, "sync_po", 0)
+	    }
+	}
+});
+
+
+
+// frappe.ui.form.on('Rise POS Shop Code', {
+// 	form_render:function(frm,cdt,cdn) {
+//         var d = locals[cdt][cdn];
+//         if(d.sync_po == 1){
+// 	        frm.fields_dict.shop_code_details.grid.update_docfield_property("sync_material", "read_only",1);
+// 	    }
+	 
+// 	    else if(d.sync_material == 1){
+// 	        frm.fields_dict.shop_code_details.grid.update_docfield_property("sync_po", "read_only",1);
+// 	    }
+	    
+// 	    else{
+// 	        frm.fields_dict.shop_code_details.grid.update_docfield_property("sync_material", "read_only",0);
+//             frm.fields_dict.shop_code_details.grid.update_docfield_property("sync_po", "read_only",0);
+// 	    }
+// 	},
+// 	sync_po:function(frm,cdt,cdn) {
+// 	    var d = locals[cdt][cdn];
+// 	    if(d.sync_po == 1){
+// 	        frm.fields_dict.shop_code_details.grid.update_docfield_property("sync_material", "read_only",1);
+// 	        frappe.model.set_value(d.doctype, d.name, "sync_material", 0)
+// 	    }
+// 	    else{
+// 	        frm.fields_dict.shop_code_details.grid.update_docfield_property("sync_material", "read_only",0);
+// 	    }
+// 	},
+// 	sync_material:function(frm,cdt,cdn) {
+// 	    var d = locals[cdt][cdn];
+// 	    if(d.sync_material == 1){
+// 	        frm.fields_dict.shop_code_details.grid.update_docfield_property("sync_po", "read_only",1);
+// 	        frappe.model.set_value(d.doctype, d.name, "sync_po", 0)
+// 	    }
+// 	    else{
+// 	        frm.fields_dict.shop_code_details.grid.update_docfield_property("sync_po", "read_only",0);
+// 	    }
+// 	}
+// });
+
+
