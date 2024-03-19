@@ -17,7 +17,7 @@ def sync_invoice_rise_api():
                 url = rps.url+"/erp/get_shop_orders"
                 payload = {
                     "shop_code": shop.shop_code,
-                    "limit": 5
+                    "limit": 20
                 }
                 headers = {
                     'api_key': rps.api_key,
