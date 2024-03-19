@@ -138,7 +138,8 @@ scheduler_events = {
 	"cron": {
 		"* * * * *": [
             "rise_pos_connector.utils.item.sync_items_rise_api",
-            "rise_pos_connector.utils.order.sync_invoice_rise_api"
+            "rise_pos_connector.utils.order.sync_invoice_rise_api",
+            "rise_pos_connector.utils.sync_po.sync_po_rise_api"
             
 		],
         "*/2 * * * *": [
