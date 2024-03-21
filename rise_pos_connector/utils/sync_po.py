@@ -71,7 +71,8 @@ def sync_po_rise_api():
                                 "supplier": get_po['supplier_information']['name'],
                                 "custom_po_number": get_po['po_number'],
                                 "schedule_date":today(),
-                                "custom_is_special_order":1
+                                "custom_is_special_order":1,
+                                "custom_shop_code":get_po['shop_code']
                                 })
                                 #Sp.Order Photo
                                 po_entry_insert.append("custom_special_order_photo",{
@@ -99,62 +100,69 @@ def sync_po_rise_api():
                                         'item_code': itm['item_code'],
                                         'schedule_date': today(),
                                         'qty':itm['quantity'],
-                                        'rate':itm['unit_cost'],
-                                        'amount':itm['unit_cost'] * itm['quantity'],
+                                        'rate':itm['unit_price'],
+                                        'amount':itm['unit_price'] * itm['quantity'],
                                         'custom_note':itm['special_order_additional_info']['note'],
                                         'custom_instruction':itm['special_order_additional_info']['instructions']
                                         })
 
-                                        for tax in itm['tax_breakup']:
-                                            tax_cat = int(tax['rate']) / 2
-                                            tax_amount = float(itm['unit_cost']) * float(itm['quantity']) * tax_cat / 100.00
-
+                                        #special_order_charges
+                                        if itm['special_order_charges'] != 0:
                                             po_entry_insert.append("taxes",{
                                                 'charge_type': "Actual",
-                                                'account_head': "SGST"+" - "+rps.abbr,
-                                                'description':"SGST",
-                                                'custom_tax_rate':int(tax['rate']) / 2,
-                                                'tax_amount':float(tax_amount)
+                                                'account_head': "Extra Charges"+" - "+rps.abbr,
+                                                'description':"Extra Charges",
+                                                'custom_tax_rate':0.00,
+                                                'tax_amount':itm['special_order_charges']
                                             })
 
+                                        for tax in itm['tax_breakup']:
                                             po_entry_insert.append("taxes",{
-                                                'charge_type': "Actual",
+                                                'charge_type': "On Net Total",
+                                                'account_head': "SGST"+" - "+rps.abbr,
+                                                'description':"SGST",
+                                                'rate':int(tax['rate']) / 2  
+                                            })
+                                            po_entry_insert.append("taxes",{
+                                                'charge_type': "On Net Total",
                                                 'account_head': "CGST"+" - "+rps.abbr,
                                                 'description':"CGST",
-                                                'custom_tax_rate':int(tax['rate']) / 2,
-                                                'tax_amount':float(tax_amount)
+                                                'rate':int(tax['rate']) / 2
                                             })
 
                                     else:
-                                        
                                         po_entry_insert.append("items",{
                                         'item_code': itm['item_code'],
                                         'schedule_date': today(),
                                         'qty':itm['quantity'],
-                                        'rate':itm['unit_cost'],
-                                        'amount':itm['unit_cost'] * itm['quantity'],
+                                        'rate':itm['unit_price'],
+                                        'amount':itm['unit_price'] * itm['quantity'],
                                         'custom_note':itm['special_order_additional_info']['note'],
                                         'custom_instruction':itm['special_order_additional_info']['instructions']
                                         })
 
-                                        for tax in itm['tax_breakup']:
-                                            tax_cat = int(tax['rate']) / 2
-                                            tax_amount = float(itm['unit_cost']) * float(itm['quantity']) * tax_cat / 100.00
-
+                                        #special_order_charges
+                                        if itm['special_order_charges'] != 0:
                                             po_entry_insert.append("taxes",{
                                                 'charge_type': "Actual",
-                                                'account_head': "SGST"+" - "+rps.abbr,
-                                                'description':"SGST",
-                                                'custom_tax_rate':int(tax['rate']) / 2,
-                                                'tax_amount':float(tax_amount)
+                                                'account_head': "Extra Charges"+" - "+rps.abbr,
+                                                'description':"Extra Charges",
+                                                'custom_tax_rate':0.00,
+                                                'tax_amount':itm['special_order_charges']
                                             })
 
+                                        for tax in itm['tax_breakup']:
                                             po_entry_insert.append("taxes",{
-                                                'charge_type': "Actual",
+                                                'charge_type': "On Net Total",
+                                                'account_head': "SGST"+" - "+rps.abbr,
+                                                'description':"SGST",
+                                                'rate':int(tax['rate']) / 2
+                                            })
+                                            po_entry_insert.append("taxes",{
+                                                'charge_type': "On Net Total",
                                                 'account_head': "CGST"+" - "+rps.abbr,
                                                 'description':"CGST",
-                                                'custom_tax_rate':int(tax['rate']) / 2,
-                                                'tax_amount':float(tax_amount)
+                                                'rate':int(tax['rate']) / 2
                                             })
                                 po_entry_insert.insert(ignore_permissions=True)
                                 # po_entry_insert.submit()
@@ -200,7 +208,8 @@ def sync_po_rise_api():
                                 "doctype": "Purchase Order",
                                 "supplier": get_po['supplier_information']['name'],
                                 "custom_po_number": get_po['po_number'],
-                                "schedule_date":today()
+                                "schedule_date":today(),
+                                "custom_shop_code":get_po['shop_code']
                                 })
                                                                 
                                 #Item
@@ -224,58 +233,68 @@ def sync_po_rise_api():
                                         'item_code': itm['item_code'],
                                         'schedule_date': today(),
                                         'qty':itm['quantity'],
-                                        'rate':itm['unit_cost'],
-                                        'amount':itm['unit_cost'] * itm['quantity']
+                                        'rate':itm['unit_price'],
+                                        'amount':itm['unit_price'] * itm['quantity']
                                         })
 
-                                        for tax in itm['tax_breakup']:
-                                            tax_cat = int(tax['rate']) / 2
-                                            tax_amount = float(itm['unit_cost']) * float(itm['quantity']) * tax_cat / 100.00
-
+                                        #special_order_charges
+                                        if itm['special_order_charges'] != 0:
                                             po_entry_insert.append("taxes",{
                                                 'charge_type': "Actual",
+                                                'account_head': "Extra Charges"+" - "+rps.abbr,
+                                                'description':"Extra Charges",
+                                                'custom_tax_rate':0.00,
+                                                'tax_amount':itm['special_order_charges']
+                                            })
+
+                                        for tax in itm['tax_breakup']:
+                                            po_entry_insert.append("taxes",{
+                                                'charge_type': "On Net Total",
                                                 'account_head': "SGST"+" - "+rps.abbr,
                                                 'description':"SGST",
-                                                'custom_tax_rate':int(tax['rate']) / 2,
-                                                'tax_amount':float(tax_amount)
+                                                'rate':int(tax['rate']) / 2  
                                             })
-
                                             po_entry_insert.append("taxes",{
-                                                'charge_type': "Actual",
+                                                'charge_type': "On Net Total",
                                                 'account_head': "CGST"+" - "+rps.abbr,
                                                 'description':"CGST",
-                                                'custom_tax_rate':int(tax['rate']) / 2,
-                                                'tax_amount':float(tax_amount)
+                                                'rate':int(tax['rate']) / 2
                                             })
-
+                                            
                                     else:
                                         
                                         po_entry_insert.append("items",{
                                         'item_code': itm['item_code'],
                                         'schedule_date': today(),
                                         'qty':itm['quantity'],
-                                        'rate':itm['unit_cost'],
-                                        'amount':itm['unit_cost'] * itm['quantity']
+                                        'rate':itm['unit_price'],
+                                        'amount':itm['unit_price'] * itm['quantity']
                                         })
 
-                                        for tax in itm['tax_breakup']:
-                                            tax_cat = int(tax['rate']) / 2
-                                            tax_amount = float(itm['unit_cost']) * float(itm['quantity']) * tax_cat / 100.00
-
+                                        #special_order_charges
+                                        if itm['special_order_charges'] != 0:
                                             po_entry_insert.append("taxes",{
                                                 'charge_type': "Actual",
-                                                'account_head': "SGST"+" - "+rps.abbr,
-                                                'description':"SGST",
-                                                'custom_tax_rate':int(tax['rate']) / 2,
-                                                'tax_amount':float(tax_amount)
+                                                'account_head': "Extra Charges"+" - "+rps.abbr,
+                                                'description':"Extra Charges",
+                                                'custom_tax_rate':0.00,
+                                                'tax_amount':itm['special_order_charges']
                                             })
 
+                                        for tax in itm['tax_breakup']:
                                             po_entry_insert.append("taxes",{
-                                                'charge_type': "Actual",
+                                                'charge_type': "On Net Total",
+                                                'account_head': "SGST"+" - "+rps.abbr,
+                                                'description':"SGST",
+                                                'rate':int(tax['rate']) / 2
+                                                
+                                            })
+                                            po_entry_insert.append("taxes",{
+                                                'charge_type': "On Net Total",
                                                 'account_head': "CGST"+" - "+rps.abbr,
                                                 'description':"CGST",
-                                                'custom_tax_rate':int(tax['rate']) / 2,
-                                                'tax_amount':float(tax_amount)
+                                                'rate':int(tax['rate']) / 2
+                                                
                                             })
                                 po_entry_insert.insert(ignore_permissions=True)
                                 # po_entry_insert.submit()
