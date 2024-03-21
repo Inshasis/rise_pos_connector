@@ -100,21 +100,12 @@ def sync_po_rise_api():
                                         'item_code': itm['item_code'],
                                         'schedule_date': today(),
                                         'qty':itm['quantity'],
-                                        'rate':itm['unit_price'],
-                                        'amount':itm['unit_price'] * itm['quantity'],
+                                        'rate':itm['unit_cost'],
+                                        'amount':itm['unit_cost'] * itm['quantity'],
                                         'custom_note':itm['special_order_additional_info']['note'],
-                                        'custom_instruction':itm['special_order_additional_info']['instructions']
+                                        'custom_instruction':itm['special_order_additional_info']['instructions'],
+                                        'custom_special_order_charges':itm['special_order_charges']
                                         })
-
-                                        #special_order_charges
-                                        if itm['special_order_charges'] != 0:
-                                            po_entry_insert.append("taxes",{
-                                                'charge_type': "Actual",
-                                                'account_head': "Extra Charges"+" - "+rps.abbr,
-                                                'description':"Extra Charges",
-                                                'custom_tax_rate':0.00,
-                                                'tax_amount':itm['special_order_charges']
-                                            })
 
                                         for tax in itm['tax_breakup']:
                                             po_entry_insert.append("taxes",{
@@ -131,26 +122,19 @@ def sync_po_rise_api():
                                             })
 
                                     else:
+                                        #Item
                                         po_entry_insert.append("items",{
                                         'item_code': itm['item_code'],
                                         'schedule_date': today(),
                                         'qty':itm['quantity'],
-                                        'rate':itm['unit_price'],
-                                        'amount':itm['unit_price'] * itm['quantity'],
+                                        'rate':itm['unit_cost'],
+                                        'amount':itm['unit_cost'] * itm['quantity'],
                                         'custom_note':itm['special_order_additional_info']['note'],
-                                        'custom_instruction':itm['special_order_additional_info']['instructions']
+                                        'custom_instruction':itm['special_order_additional_info']['instructions'],
+                                        'custom_special_order_charges':itm['special_order_charges']
                                         })
 
-                                        #special_order_charges
-                                        if itm['special_order_charges'] != 0:
-                                            po_entry_insert.append("taxes",{
-                                                'charge_type': "Actual",
-                                                'account_head': "Extra Charges"+" - "+rps.abbr,
-                                                'description':"Extra Charges",
-                                                'custom_tax_rate':0.00,
-                                                'tax_amount':itm['special_order_charges']
-                                            })
-
+                                        #Tax
                                         for tax in itm['tax_breakup']:
                                             po_entry_insert.append("taxes",{
                                                 'charge_type': "On Net Total",
@@ -167,6 +151,7 @@ def sync_po_rise_api():
                                 po_entry_insert.insert(ignore_permissions=True)
                                 # po_entry_insert.submit()
                         
+
                         #Regular Order - is_special_order": false"
                         else:
                             # Create Supplier
@@ -233,20 +218,12 @@ def sync_po_rise_api():
                                         'item_code': itm['item_code'],
                                         'schedule_date': today(),
                                         'qty':itm['quantity'],
-                                        'rate':itm['unit_price'],
-                                        'amount':itm['unit_price'] * itm['quantity']
+                                        'rate':itm['unit_cost'],
+                                        'amount':itm['unit_cost'] * itm['quantity'],
+                                        'custom_special_order_charges':itm['special_order_charges']
                                         })
 
-                                        #special_order_charges
-                                        if itm['special_order_charges'] != 0:
-                                            po_entry_insert.append("taxes",{
-                                                'charge_type': "Actual",
-                                                'account_head': "Extra Charges"+" - "+rps.abbr,
-                                                'description':"Extra Charges",
-                                                'custom_tax_rate':0.00,
-                                                'tax_amount':itm['special_order_charges']
-                                            })
-
+                                        #Tax
                                         for tax in itm['tax_breakup']:
                                             po_entry_insert.append("taxes",{
                                                 'charge_type': "On Net Total",
@@ -262,25 +239,17 @@ def sync_po_rise_api():
                                             })
                                             
                                     else:
-                                        
+                                        #Item
                                         po_entry_insert.append("items",{
                                         'item_code': itm['item_code'],
                                         'schedule_date': today(),
                                         'qty':itm['quantity'],
-                                        'rate':itm['unit_price'],
-                                        'amount':itm['unit_price'] * itm['quantity']
+                                        'rate':itm['unit_cost'],
+                                        'amount':itm['unit_cost'] * itm['quantity'],
+                                        'custom_special_order_charges':itm['special_order_charges']
                                         })
 
-                                        #special_order_charges
-                                        if itm['special_order_charges'] != 0:
-                                            po_entry_insert.append("taxes",{
-                                                'charge_type': "Actual",
-                                                'account_head': "Extra Charges"+" - "+rps.abbr,
-                                                'description':"Extra Charges",
-                                                'custom_tax_rate':0.00,
-                                                'tax_amount':itm['special_order_charges']
-                                            })
-
+                                        #Tax
                                         for tax in itm['tax_breakup']:
                                             po_entry_insert.append("taxes",{
                                                 'charge_type': "On Net Total",
