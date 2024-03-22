@@ -5,11 +5,15 @@ import frappe
 import requests
 import json
 from frappe.utils import today
+from datetime import datetime
+from frappe.utils import add_to_date
 
 
 #Create Journal Entry - Expenses
 @frappe.whitelist(allow_guest=True)
 def sync_jv_rise_api():
+    one_day_before = add_to_date(datetime.now(), days=-2, as_string=True)
+    
     rps = frappe.get_doc('Rise POS Settings')
     if rps.enable and rps.url:
         for shop in rps.shop_code_details:
@@ -17,8 +21,8 @@ def sync_jv_rise_api():
                 url = rps.url+"/erp/get_cash_register_list"
                 payload = {
                     "shop_code": shop.shop_code,
-                    "start_date":"2024-03-20",
-                    "end_date":"2024-03-21",
+                    "start_date":one_day_before,
+                    "end_date":today(),
                     "terminal_ids":"null",
                     "is_til_detail_include":"true"
                 }
