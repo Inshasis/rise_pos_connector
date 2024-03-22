@@ -75,9 +75,10 @@ def sync_po_rise_api():
                                 "custom_shop_code":get_po['shop_code']
                                 })
                                 #Sp.Order Photo
-                                po_entry_insert.append("custom_special_order_photo",{
-                                    'photo': rps.url+"/"+get_po['special_order_img_url']
-                                })
+                                for url_img in get_po['special_order_img_urls']:
+                                    po_entry_insert.append("custom_special_order_photo",{
+                                        'photo': rps.url+"/"+url_img
+                                    })
                                 
                                 #Item
                                 for itm in get_po['po_order_items']:
