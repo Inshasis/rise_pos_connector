@@ -83,6 +83,33 @@ def get_all_customers(licence_no,api_key):
 					})
 					warehouse.insert()
 
+				# Create Customer
+				customer = str(shop['shop_code']) +"-"+ str(shop['name'])
+				customer_list = frappe.get_list('Customer', fields=['customer_name'])
+				check = {'customer_name': customer}
+				if check not in customer_list:
+					customer = frappe.get_doc({
+						"doctype": "Customer",
+						"customer_name": customer,
+						"customer_group": 'Individual',
+						"territory":'India'
+					})
+					customer.insert()
+
+				# Create Supplier
+				# supplier = str(shop['shop_code']) +"-"+ str(shop['name'])
+				# supplier_list = frappe.get_list('Supplier', fields=['supplier_name'])
+				# check_sup = {'supplier_name': supplier}
+				# if check_sup not in supplier_list:
+				# 	supplier = frappe.get_doc({
+				# 		"doctype": "Supplier",
+				# 		"supplier_name": supplier,
+				# 		"supplier_group": 'All Supplier Groups',
+				# 		"supplier_type":'Individual',
+				# 		"territory":'India'
+				# 	})
+				# 	supplier.insert()
+				
 			return data['result']['shops']	
 				
 		except json.JSONDecodeError as e:

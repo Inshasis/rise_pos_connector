@@ -37,7 +37,9 @@ def sync_material_rise_api():
                             "doctype": "Material Request",
                             "schedule_date":today(),
                             "material_request_type":"Purchase",
-                            "custom_id":get_mr['po_number']
+                            "custom_id":get_mr['po_number'],
+                            "custom_shop_code":get_mr['shop_code'],
+                            "set_warehouse":get_mr['supplier_name']+" - "+rps.abbr
                             })
                                                             
                             #Item
