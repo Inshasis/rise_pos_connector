@@ -36,6 +36,7 @@ doctype_list_js = {
     "Sales Invoice" : "public/js/sales_invoice_list.js",
     "Item" : "public/js/item_list.js",
     "Journal Entry" : "public/js/journal_entry_list.js",
+    "Material Request" : "public/js/material_request_list.js",
 	}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -145,7 +146,8 @@ scheduler_events = {
 		"* * * * *": [
             "rise_pos_connector.utils.item.sync_items_rise_api",
             "rise_pos_connector.utils.order.sync_invoice_rise_api",
-            # "rise_pos_connector.utils.sync_po.sync_po_rise_api"
+            # "rise_pos_connector.utils.sync_po.sync_po_rise_api",
+            "rise_pos_connector.utils.sync_material.sync_material_rise_api"
             
 		],
         "*/2 * * * *": [

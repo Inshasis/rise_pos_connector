@@ -268,7 +268,5 @@ def sync_po_rise_api():
                                             })
                                 po_entry_insert.insert(ignore_permissions=True)
                                 # po_entry_insert.submit()
-
-            
     else:
         frappe.throw("Please Check Rise POS Setting")
